@@ -1,0 +1,254 @@
+{% extends 'layout.html' %}
+
+{% block style %}
+
+    <style>
+        .stu-job{
+            height: 117.5px;
+            width: 300px;
+            padding: 16px;
+        }
+        .work-area{
+            width: 50px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            float: right;
+        }
+        .sort-click{
+            background-color: #b3b3b3;
+            color: #6144ec;
+            border-bottom: 5px solid #ec971f;
+        }
+        .sort{
+            cursor: pointer;
+            float: left;
+            height: 56.4px;
+            padding: 0 10px;
+            margin-left: 20px;
+            line-height: 68px;
+        }
+        .screen{
+            display: inline-block;
+            padding: 0 10px;
+            height: 28.2px;
+            font-size: smaller;
+            margin: 0 5px;
+            cursor: pointer;
+
+        }
+        .screen:hover{
+            background-color: #ec971f
+        }
+        .click-screen{
+            background-color: #ec971f;
+            color: black;
+        }
+
+
+    </style>
+
+{% endblock %}
+
+
+
+{% block content %}
+    {% load core_tags_filters %}
+    <div class="clearfix container" style="background-color: whitesmoke; border-radius: 4px; width: 1300px; padding: 0">
+            <div style="display: inline-block; padding: 15px; background-color: #ec971f; border-radius: 4px; float: left">
+                <h3 style="margin: 0">{{work_type}}岗位合集</h3>
+            </div>
+            <div>
+                <a href="?{% param_replace sort='id' %}">
+                <div class=" sort" id="id" style="margin-left: 40px;">
+                    综合排序
+                </div>
+                    </a>
+                <a href="?{% param_replace sort='release_date' %}">
+                <div id="release_date" class="sort">
+                    最新优先
+                </div>
+                    </a>
+                <a href="?{% param_replace sort='provide_salary' %}">
+                <div id="provide_salary" class="sort">
+                薪资优先
+            </div>
+                    </a>
+            </div>
+            <div style="float: right; width: 750px; height: 56.4px;">
+                <div style="width: 800px; height: 28.2px; border-bottom: 1px dotted #dddddd; line-height: 28.2px">
+                    <div style="display:inline-block; padding: 0 10px; background-color: #ec971f;">工作年限</div>
+                    <div style="display:inline-block;">
+                        <a href="?{% param_replace work_year='' %}" style="text-decoration: none">
+                            <div id="wor所有" class="screen">所有</div>
+                        </a>
+
+                        <a href="?{% param_replace work_year='在校生/应届生' %}" style="text-decoration: none">
+                            <div id="在校生" class="screen">在校生/应届生</div>
+                        </a>
+                        <a href="?{% param_replace work_year='1-3年' %}" style="text-decoration: none">
+                            <div id="1-3年" class="screen">1-3年</div>
+                        </a>
+                        <a href="?{% param_replace work_year='3-5年' %}" style="text-decoration: none">
+                            <div id="3-5年" class="screen">3-5年</div>
+                        </a>
+                        <a href="?{% param_replace work_year='5-10年' %}" style="text-decoration: none">
+                            <div id="5-10年" class="screen">5-10年</div>
+                        </a>
+                        <a href="?{% param_replace work_year='10年以上' %}" style="text-decoration: none">
+                            <div id="10年以上" class="screen">10年以上</div>
+                        </a>
+                        <a href="?{% param_replace work_year='无需经验' %}" style="text-decoration: none">
+                            <div id="无需经验" class="screen">无需经验</div>
+                        </a>
+                    </div>
+                </div>
+                <div style="width: 800px; height: 28.2px; line-height: 28.2px">
+                    <div style="display:inline-block; padding: 0 10px;background-color: #ec971f">学历要求</div>
+                    <div style="display: inline;">
+                        <a href="?{% param_replace educa='' %}" style="text-decoration: none">
+                            <div id="edu所有" class="screen">所有</div>
+                        </a>
+                        <a href="?{% param_replace educa='初中及以下' %}" style="text-decoration: none">
+                            <div id="初中及以下" class="screen">初中及以下</div>
+                        </a>
+                        <a href="?{% param_replace educa='高中/中技/中专' %}" style="text-decoration: none">
+                            <div id="高中" class="screen">高中/中技/中专</div>
+                        </a>
+                        <a href="?{% param_replace educa='大专' %}" style="text-decoration: none">
+                            <div id="大专" class="screen">大专</div>
+                        </a>
+                        <a href="?{% param_replace educa='本科' %}" style="text-decoration: none">
+                            <div id="本科" class="screen">本科</div>
+                        </a>
+                        <a href="?{% param_replace educa='硕士' %}" style="text-decoration: none">
+                            <div id="硕士" class="screen">硕士</div>
+                        </a>
+                        <a href="?{% param_replace educa='博士' %}" style="text-decoration: none">
+                            <div id="博士" class="screen">博士</div>
+                        </a>
+                        <a href="?{% param_replace educa='无学历要求' %}" style="text-decoration: none">
+                            <div id="无学历要求" class="screen">无学历要求</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    <div class="container" style=" width: 1248px; padding: 20px; padding-top: 5px">
+
+
+        <div class="clearfix" id="par-work">
+            <div id="work-content">
+            {% if job_list%}
+                <div style="float: left; width: 900px;">
+                {% for item in job_list %}
+                <div class="clearfix" style="margin-top: 10px; background-color: whitesmoke; height: 150px; border-radius: 4px; padding: 10px 15px">
+                    <a href="{{ item.job_link }}" target="_blank">
+                    <div style="float: left; width: 580px; height: 130px;">
+                        <span style="font-size: x-large; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 580px">{{item.job_name}}</span>
+                        <span style="margin-left: 20px">{{ item.release_date }}</span>
+                        {% if item.provide_salary == '' %}
+                            <div style="font-size: large; margin: 5px; color: orangered">
+                                无
+                            </div>
+                        {% else %}
+                            <div style="font-size: large; margin: 5px; color: orangered">
+                                {{ item.provide_salary }}
+                            </div>
+                        {% endif %}
+
+                        <div style="margin-left: 5px; color: #8c8c8c; height: 19.99px">
+                            {{item.work_area}} | {{item.attribute}}
+                        </div>
+                        <div style="margin-top: 8px; margin-left: 5px; color: #8c8c8c; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 580px">
+                            {{ item.job_welf }}
+                        </div>
+                    </div>
+                    </a>
+                    <div style="float: left; height: 130px; width: 290px">
+                        <a href="{{ item.company_link }}" target="_blank" style="text-decoration: none">
+                        <div style="text-align: right; font-size: 17px; margin: 15px 0; height: 24.28px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 290px">
+                            {{item.company_name}}
+                        </div>
+                        </a>
+                        <div style="text-align: right; font-size: 15px; height: 21.43px">
+                            {{item.company_type}}
+                        </div>
+                        <div style="text-align: right; font-size: 15px; margin: 15px 0; height: 21.43px">
+                            {{item.company_ind}}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                <div style=" font-size: xx-large; line-height: 590px; text-align: center; color: #8c8c8c; float: left; width: 900px; height: 590px; background-color: whitesmoke; margin-top: 50px; background-image:url(../static/images/empty.png);">
+                    啊哦！没有更多内容了，换个关键词试试呢...
+                </div>
+            {% endif %}
+            </div>
+            <div style="float: right; width: 298px;margin-top: 10px">
+                <div class="panel panel-default">
+                  <div class="panel-body" style="font-size: large; padding: 10px; background-color: #8c8c8c; border-radius: 4px">
+                    为你推荐
+                  </div>
+                  <div class="panel-body" style="height: 587.5px; padding: 0">
+                      {% for item in recommend_random %}
+                        <a href="{{ item.job_link }}" target="_blank" style="text-decoration: blink">
+                            <div class="stu-job">
+                                <h5 style=" width: 268px; white-space: nowrap;text-overflow: ellipsis;overflow: hidden; color: orangered">{{ item.job_name }}</h5>
+                                <a href="{{ item.company_link }}" target="_blank" style="text-decoration: none">
+                                <div style="font-size: small; width: 268px; white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+                                    {{ item.company_name }}
+                                </div>
+                                </a>
+                                <div class="clearfix" style=" margin-top: 5px">
+                                    <div style="float: left;">
+                                        {% if item.provide_salary == '' %}
+                                        薪资：无
+                                    {% else %}
+                                        薪资：{{ item.provide_salary }}
+                                    {% endif %}
+                                    </div>
+                                    <div class="work-area" style="float: right; width: 80px;">
+                                        {{ item.work_area }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if job_list %}
+        <div class="container" style="width: 1300px; text-align: center">
+    <ul class="pagination">
+        {{ page_string }}
+    </ul>
+    </div>
+    {% endif %}
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+
+
+    $(document).ready(function(){
+        $("#{{ sort_info }}").addClass("sort-click");
+        $("#{{ educa_info }}").addClass("click-screen");
+        $("#{{ work_info }}").addClass("click-screen");
+    });
+
+    </script>
+{% endblock %}

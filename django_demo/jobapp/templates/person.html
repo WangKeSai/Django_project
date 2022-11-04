@@ -1,0 +1,358 @@
+{% extends 'layout.html' %}
+
+
+{% block style %}
+    <link rel="stylesheet" href="../static/fonts/laydate/theme/default/laydate.css" media="all">
+    <style>
+        .person_info{
+            border: 1px solid black;
+            height: 37.49px;
+            line-height: 37.49px;
+            text-align: center;
+        }
+        .info_head{
+            background-color: #b3b3b3;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container clearfix" style="height: 100px; width: 100%; background-color: whitesmoke; line-height: 100px; padding-left: 150px">
+
+        <div style="background-color: #dddddd; display: inline-block; height: 100px; width: 100px; padding: 0 ; float: left">
+            {% if img_64 %}
+                <img src="data:image/png;base64,{{ img_64 }}" alt="" style="height: 100px;width: 100px">
+            {% else %}
+                <img src="../static/images/myIcon.png" alt="" style="height: 60px;width: 60px; margin-left: 20px">
+            {% endif %}
+
+        </div>
+        <div style="float: left; height: 100px; width: 250px; margin-left: 100px">
+            {% if user_obj %}
+
+                <h1>姓名：{{user_obj.name}}</h1>
+                <h4>性别：{{user_obj.gender}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年龄：{{user_obj.age}}</h4>
+            {% else %}
+                <h1>姓名：</h1>
+                <h4>性别：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年龄：</h4>
+            {% endif %}
+        </div>
+        {% if user_obj %}
+            <div style="float: left; height: 100px; width: 300px; margin-left: 150px;">
+                <div style="height: 50px; line-height: 60px; font-size: large">
+                    <img src="../static/images/phone.png" alt="" height="30px">
+                    Phone:{{user_obj.phone}}
+                </div>
+                <div style="height: 50px; line-height: 50px; font-size: large">
+                    <img src="../static/images/email.png" alt="" height="30px">
+                    Email:{{ user_obj.email }}
+                </div>
+            </div>
+        {% else %}
+            <div style="float: left; height: 100px; width: 300px; margin-left: 150px;">
+                <div style="height: 50px; line-height: 60px; font-size: large">
+                    <img src="../static/images/phone.png" alt="" height="30px">
+                    Phone:
+                </div>
+                <div style="height: 50px; line-height: 50px; font-size: large">
+                    <img src="../static/images/email.png" alt="" height="30px">
+                    Email:
+                </div>
+            </div>
+        {% endif %}
+        <div style="float: left; height: 100px">
+            <div style="height: 50px; line-height: 50px; margin-left: 250px;">
+                <button data-toggle="modal" data-target="#img_modal" type="button" class="btn btn-primary" style="height: 40px; margin: 0;">更换头像</button>
+            </div>
+            <div style="height: 50px; line-height: 50px; margin-left: 250px;">
+                <button data-toggle="modal" data-target="#info_modal" type="button" class="btn btn-primary" style="height: 40px; margin:0;">修改资料</button>
+            </div>
+        </div>
+
+    </div>
+    <div style="width: 100%; background-color: #66afe9">
+        {% if user_obj %}
+            <div class="container" style="width: 95%;">
+            <div style=" margin-bottom: 10px; margin-top: 10px" class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">教育背景</h3>
+              </div>
+              <div class="panel-body">
+                  <div class="row">
+                        <div class="col-md-3 person_info info_head">学校名称</div>
+                        <div class="col-md-3 person_info info_head">入学时间</div>
+                        <div class="col-md-3 person_info info_head">毕业时间</div>
+                        <div class="col-md-3 person_info info_head">所学专业</div>
+                    </div>
+                  <div class="row">
+                        <div class="col-md-3 person_info">{{ user_obj.school }}</div>
+                        <div class="col-md-3 person_info">{{user_obj.school_starttime}}</div>
+                        <div class="col-md-3 person_info">{{user_obj.school_endtime}}</div>
+                        <div class="col-md-3 person_info">{{user_obj.major}}</div>
+                    </div>
+              </div>
+            </div>
+            <div style="magin: 0 0 10px" class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">项目经验</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3 person_info info_head">项目名称</div>
+                        <div class="col-md-3 person_info info_head">开始时间</div>
+                        <div class="col-md-3 person_info info_head">结束时间</div>
+                        <div class="col-md-3 person_info info_head">负责职务</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 person_info">{{user_obj.project}}</div>
+                        <div class="col-md-3 person_info">{{user_obj.project_starttime}}</div>
+                        <div class="col-md-3 person_info">{{user_obj.project_endtime}}</div>
+                        <div class="col-md-3 person_info">{{user_obj.project_duty}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 person_info info_head" style="height: 200px; line-height: 200px">项目描述</div>
+                        <div class="col-md-11 person_info" style="height: 200px; text-align: left">{{user_obj.project_content}}</div>
+                    </div>
+                  </div>
+                  </div>
+            <div style="margin: 0 0 10px" class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">实习经历</h3>
+                  </div>
+                  <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-3 person_info info_head">公司名称</div>
+                        <div class="col-md-3 person_info info_head">开始时间</div>
+                        <div class="col-md-3 person_info info_head">结束时间</div>
+                        <div class="col-md-3 person_info info_head">负责职务</div>
+                    </div>
+                      <div class="row">
+                        <div class="col-md-3 person_info">{{user_obj.work}}</div>
+                        <div class="col-md-3 person_info">{{user_obj.work_starttime}}</div>
+                        <div class="col-md-3 person_info">{{user_obj.work_endtime}}</div>
+                        <div class="col-md-3 person_info">{{user_obj.work_duty}}</div>
+                    </div>
+                      <div class="row">
+                        <div class="col-md-1 person_info info_head" style="height: 200px; line-height: 200px">工作内容</div>
+                        <div class="col-md-11 person_info" style="height: 200px; text-align: left">{{user_obj.work_content}}</div>
+                    </div>
+                  </div>
+                </div>
+            <div style="margin: 0 0 10px" class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">自我评价</h3>
+              </div>
+              <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-1 person_info info_head" style="height: 200px; line-height: 200px">自我评价</div>
+                        <div class="col-md-11 person_info" style="height: 200px; text-align: left">{{user_obj.evaluation}}</div>
+                    </div>
+              </div>
+            </div>
+        </div>
+        {% else %}
+            <div class="container" style="width: 95%;">
+            <div style=" margin-bottom: 10px; margin-top: 10px" class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">教育背景</h3>
+              </div>
+              <div class="panel-body">
+                  <div class="row">
+                        <div class="col-md-3 person_info info_head">学校名称</div>
+                        <div class="col-md-3 person_info info_head">入学时间</div>
+                        <div class="col-md-3 person_info info_head">毕业时间</div>
+                        <div class="col-md-3 person_info info_head">所学专业</div>
+                    </div>
+                  <div class="row">
+                        <div class="col-md-3 person_info"></div>
+                        <div class="col-md-3 person_info"></div>
+                        <div class="col-md-3 person_info"></div>
+                        <div class="col-md-3 person_info"></div>
+                    </div>
+              </div>
+            </div>
+            <div style="magin: 0 0 10px" class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">项目经验</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3 person_info info_head">项目名称</div>
+                        <div class="col-md-3 person_info info_head">开始时间</div>
+                        <div class="col-md-3 person_info info_head">结束时间</div>
+                        <div class="col-md-3 person_info info_head">负责职务</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 person_info"></div>
+                        <div class="col-md-3 person_info"></div>
+                        <div class="col-md-3 person_info"></div>
+                        <div class="col-md-3 person_info"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 person_info info_head" style="height: 200px; line-height: 200px">项目描述</div>
+                        <div class="col-md-11 person_info" style="height: 200px; text-align: left"></div>
+                    </div>
+                  </div>
+                  </div>
+            <div style="margin: 0 0 10px" class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">实习经历</h3>
+                  </div>
+                  <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-3 person_info info_head">公司名称</div>
+                        <div class="col-md-3 person_info info_head">开始时间</div>
+                        <div class="col-md-3 person_info info_head">结束时间</div>
+                        <div class="col-md-3 person_info info_head">负责职务</div>
+                    </div>
+                      <div class="row">
+                        <div class="col-md-3 person_info"></div>
+                        <div class="col-md-3 person_info"></div>
+                        <div class="col-md-3 person_info"></div>
+                        <div class="col-md-3 person_info"></div>
+                    </div>
+                      <div class="row">
+                        <div class="col-md-1 person_info info_head" style="height: 200px; line-height: 200px">工作内容</div>
+                        <div class="col-md-11 person_info" style="height: 200px; text-align: left"></div>
+                    </div>
+                  </div>
+                </div>
+            <div style="margin: 0 0 10px" class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">自我评价</h3>
+              </div>
+              <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-1 person_info info_head" style="height: 200px; line-height: 200px">自我评价</div>
+                        <div class="col-md-11 person_info" style="height: 200px; text-align: left"></div>
+                    </div>
+              </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="modal fade container" id="info_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="width: 1400px; margin-top: 20px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModal">修 改 资 料</h4>
+      </div>
+      <div class="modal-body" style="height: 850px;">
+          <form id="reset-perinfo">
+              {% for item in form %}
+                  <div class="form-group col-md-6">
+                      <label>{{ item.label }}</label>
+                        {{ item }}
+                        <span class="info-err" style="color: red"></span>
+                  </div>
+              {% endfor %}
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+        <button type="button" class="btn btn-primary" id="reset-info">修 改</button>
+      </div>
+    </div>
+</div>
+    <div class="modal fade container" id="img_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="width: 500px; margin-top: 200px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModal">修 改 头 像</h4>
+          </div>
+          <div class="modal-body">
+              <div style="position: absolute;top: 20%;left: 15%">
+    <input type="file"  name="file" id="Images" multiple="multiple"   accept="image/*" />
+	</div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+            <button type="button" class="btn btn-primary" id="reset-img">修 改</button>
+          </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="../static/fonts/laydate/laydate.js"></script>
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        laydate.render({
+          elem: '.info-data' //指定元素
+        });
+        $(function () {
+            binBtn1Event();
+
+        });
+        function binBtn1Event() {
+            $("#reset-info").click(function () {
+
+                $(".info-err").text('');
+                $.ajax({
+
+                    url: '/reset_info/',
+                    type: 'post',
+                    data: $("#reset-perinfo").serialize(),
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res.status){
+                            alert("修改成功");
+                            $("#info_modal").modal("hide");
+                            window.location.href = '/person_info/';
+
+                        }
+                        else {
+                            $.each(res.error, function (name, errorList) {
+                                $("#id_"+ name).next().text(errorList[0])
+                                
+                            })
+                        }
+                    }
+                })
+            })
+        }
+         $(document).ready(function () {
+//jq的处理函数，当点击提交按钮时执行。
+            $("#reset-img").click(function () {
+                var data = new FormData();
+                var len = $('#Images')[0].files.length;
+                for(var i =0;i<len;i++) {
+                    var file = $('#Images')[0].files[i];
+                    data.append('files', file);//将图片信息file保存到该对象
+                };
+
+                if (len==0){
+                    alert("未上传图片！");
+                }
+                else {
+                $.ajax({
+                       url:'/reset_headimg/',
+                       type:'POST',
+                       data:data,
+                       processData:false,//建议添加，否则值传可能不到对应url
+                       contentType:false,//建议添加，否则值可能传不到对应url
+                       success:function(res){
+                           if (res.status){
+                               alert("修改成功");
+                            $("#info_modal").modal("hide");
+                            window.location.href = '/person_info/';
+                           }
+
+                       },
+                       error:function(arg){
+                         console.log(arg);
+                         $('#result').html(arg);
+                          alert("修改失败")
+                       }
+                     });
+
+                }
+
+            });
+
+        });
+    </script>
+{% endblock %}

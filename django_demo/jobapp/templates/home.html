@@ -1,0 +1,431 @@
+{% extends 'layout.html' %}
+
+{% block style %}
+
+    <style>
+        .recommend-job-list {
+            height: 148px;
+            width: 250px;
+            float: left;
+            margin-left: 9.5px;
+            border: 1px solid #bdbdbd;
+            background-color: #eaeaea;
+            padding: 14px;
+        }
+        .stu-job{
+            height: 117.5px;
+            width: 300px;
+            background-color: #c6faf7;
+            padding: 16px;
+        }
+
+        .job-name {
+            width: 180px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .provide-salary {
+            width: 180px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .job-welf {
+
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin-top: 5px;
+            height: 22px;
+            width: 218px;
+            border-bottom: 1px solid #b3b3b3;
+        }
+        .company-name{
+            width: 140px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            float: left;
+        }
+        .work-area{
+            width: 50px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            float: right;
+        }
+        .city-header{
+            height: 37.5px;
+            width: 100px;
+            background-color: #cfcfcf;
+            font-size: 20px;
+            text-align:center;
+            line-height: 37.5px;
+            border-bottom: 1px dotted #dddddd;
+            cursor: pointer;
+        }
+        .city-click{
+            background-color: whitesmoke;
+            border-right: 5px solid orange;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container clearfix" style="height: 715px; width: 1390px; background: white">
+        <div class="container" style="width: 1000px; margin-top: 8px">
+            <form action="/works/" method="get">
+            <div class="input-group" style="width: 800px; float:left;">
+                <div style="width: 79.91px; height: 42px; border: 1.5px solid #bfbfbf; float: left; background-color: #bdbdbd">
+                    <span style="line-height: 42px; margin-left: 10px">搜索职位</span>
+                </div><!-- /btn-group -->
+                <input type="text" class="form-control" aria-label="Text input with dropdown button"
+                       style="float: left; width: 720px" name="query" placeholder="请输入搜索内容" required="required">
+            </div>
+            <input class="btn btn-default" type="submit" value="搜索"
+                   style="float: left; border: 1px solid #bfbfbf; background-color: #bdbdbd">
+            </form>
+        </div>
+
+        <div class="container" style="width: 850px; margin-top: 4px;">
+            <span style="color: #ec971f; font-weight: bold">热门城市</span>
+            <ul style="display: inline-block; padding: 0 0 0 20px">
+                <span style="margin-left: 13px"><a href="/works?city_name=北京">北 京</a></span>
+                <span style="margin-left: 13px"><a href="/works?city_name=上海">上 海</a></span>
+                <sapn style="margin-left: 13px"><a href="/works?city_name=深圳">深 圳</a></sapn>
+                <sapn style="margin-left: 13px"><a href="/works?city_name=成都">成 都</a></sapn>
+                <sapn style="margin-left: 13px"><a href="/works?city_name=广州">广 州</a></sapn>
+                <sapn style="margin-left: 13px"><a href="/works?city_name=武汉">武 汉</a></sapn>
+                <sapn style="margin-left: 13px"><a href="/works?city_name=南京">南 京</a></sapn>
+                <sapn style="margin-left: 13px"><a href="/works?city_name=重庆">重 庆</a></sapn>
+                <sapn style="margin-left: 13px"><a href="/works?city_name=西安">西 安</a></sapn>
+                <sapn style="margin-left: 13px"><a href="/works?city_name=天津">天 津</a></sapn>
+                <sapn style="margin-left: 13px"><a href="/works?city_name=青岛">青 岛</a></sapn>
+                <sapn data-toggle="modal" data-target="#cityModal" style="margin-left: 20px; cursor:pointer; color: #ec971f">所有城市>></sapn>
+
+            </ul>
+        </div>
+
+        <div style="float: left; width: 1052px; height: 630px;">
+            <div class="panel panel panel-success" style="margin: 0 0 0 0; height: 200px">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="display: inline-block">Python岗位推荐</h3>
+                    <a href="/works?work_name=python" style="display: inline-block; float: right">查看更多Python岗位>></a>
+                </div>
+                <div class="panel-body clearfix" style="padding: 5px; padding-left: 1px; background-color: #d6e9c6">
+                    {% for item in python_data %}
+                        <a href="{{ item.job_link }}" target="_blank" style="text-decoration: none;">
+                            <div class="recommend-job-list">
+                                <div class="job-name" style="display: inline-block; color: #1513f5">
+                                    {{ item.job_name }}
+                                </div>
+                                <div class="provide-salary" style=" font-size: smaller; color: red">
+                                    {% if item.provide_salary == '' %}
+                                        薪资：无
+                                    {% else %}
+                                        薪资：{{ item.provide_salary }}
+                                    {% endif %}
+                                </div>
+                                <div style="margin-top: 5px">
+                                    要求：{{ item.attribute }}
+                                </div>
+                                <div class="job-welf">
+                                    {% if item.job_welf == '' %}
+                                        福利：无
+                                    {% else %}
+                                        福利：{{ item.job_welf }}
+                                    {% endif %}
+
+                                </div>
+                                <div class="clearfix" style="margin-top: 2px">
+                                    <a href="{{ item.company_link }}" target="_blank">
+                                    <div class="company-name">
+                                      {{ item.company_name }}
+                                    </div>
+                                        </a>
+                                    <div class="work-area" style="float: right">
+                                        {{ item.work_area }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="panel panel-danger" style="margin: 15px 0 0 0; height: 200px">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="display: inline-block">Java岗位推荐</h3>
+                    <a href="/works?work_name=java" style="display: inline-block; float: right">查看更多Java岗位>></a>
+                </div>
+                <div class="panel-body clearfix" style="padding: 5px; padding-left: 1px; background-color: #ebccd1">
+                    {% for item in java_data %}
+                        <a href="{{ item.job_link }}" target="_blank" style="text-decoration: none;">
+                            <div class="recommend-job-list">
+                                <div class="job-name" style="display: inline-block; color: #1513f5">
+                                    {{ item.job_name }}
+                                </div>
+                                <div class="provide-salary" style=" font-size: smaller; color: red">
+                                    {% if item.provide_salary == '' %}
+                                        薪资：无
+                                    {% else %}
+                                        薪资：{{ item.provide_salary }}
+                                    {% endif %}
+                                </div>
+                                <div style="margin-top: 5px">
+                                    要求：{{ item.attribute }}
+                                </div>
+                                <div class="job-welf">
+                                    {% if item.job_welf == '' %}
+                                        福利：无
+                                    {% else %}
+                                        福利：{{ item.job_welf }}
+                                    {% endif %}
+
+                                </div>
+                                <div class="clearfix" style="margin-top: 2px">
+                                    <a href="{{ item.company_link }}" target="_blank">
+                                    <div class="company-name">
+                                      {{ item.company_name }}
+                                    </div>
+                                    </a>
+                                    <div class="work-area" style="float: right">
+                                        {{ item.work_area }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="panel panel-warning" style="margin: 15px 0 0 0; height: 200px">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="display: inline-block">大数据岗位推荐</h3>
+                    <a href="/works?work_name=大数据" style="display: inline-block; float: right">查看更多大数据岗位>></a>
+                </div>
+                <div class="panel-body clearfix" style="padding: 5px; padding-left: 1px; background-color: #faebcc">
+                   {% for item in big_data %}
+                        <a href="{{ item.job_link }}" target="_blank" style="text-decoration: none;">
+                            <div class="recommend-job-list">
+                                <div class="job-name" style="display: inline-block; color: #1513f5">
+                                    {{ item.job_name }}
+                                </div>
+                                <div class="provide-salary" style=" font-size: smaller; color: red">
+                                    {% if item.provide_salary == '' %}
+                                        薪资：无
+                                    {% else %}
+                                        薪资：{{ item.provide_salary }}
+                                    {% endif %}
+                                </div>
+                                <div style="margin-top: 5px">
+                                    要求：{{ item.attribute }}
+                                </div>
+                                <div class="job-welf">
+                                    {% if item.job_welf == '' %}
+                                        福利：无
+                                    {% else %}
+                                        福利：{{ item.job_welf }}
+                                    {% endif %}
+
+                                </div>
+                                <div class="clearfix" style="margin-top: 2px">
+                                    <a href="{{ item.company_link }}" target="_blank">
+                                    <div class="company-name">
+                                      {{ item.company_name }}
+                                    </div>
+                                    </a>
+                                    <div class="work-area" style="float: right">
+                                        {{ item.work_area }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div style="float: right; width: 300px; height: 630px;">
+            <div class="panel panel-info" style="height: 630px;">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="display: inline-block">应届生岗位</h3>
+                    <a href="/works?stu_work=应届生" style="display: inline-block; float: right">查看更多>></a>
+                </div>
+                <div class="panel-body" style="padding: 0">
+                    {% for item in student_data %}
+                        <a href="{{ item.job_link }}" target="_blank" style="text-decoration: blink">
+                            <div class="stu-job">
+                                <h5 style=" width: 268px; white-space: nowrap;text-overflow: ellipsis;overflow: hidden; color: orangered">{{ item.job_name }}</h5>
+                                <a href="{{ item.company_link }}" target="_blank" style="text-decoration: none">
+                                <div style="font-size: small; width: 268px; white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+                                    {{ item.company_name }}
+                                </div>
+                                </a>
+                                <div class="clearfix" style=" margin-top: 5px">
+                                    <div style="float: left;">
+                                        {% if item.provide_salary == '' %}
+                                        薪资：无
+                                    {% else %}
+                                        薪资：{{ item.provide_salary }}
+                                    {% endif %}
+                                    </div>
+                                    <div class="work-area" style="float: right; width: 80px;">
+                                        {{ item.work_area }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade container" id="cityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="width: 600px; margin-top: 200px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">更多城市</h4>
+      </div>
+      <div class="modal-body">
+          <div class="clearfix" style="height: 300px;">
+              <div  style="float: left">
+                  <div class="city-header city-click" id="abc" onclick="clickMe(this);">
+                      A B C
+                  </div>
+
+                  <div class="city-header" id="def" onclick="clickMe(this);">
+                      D E F
+                  </div>
+
+                  <div class="city-header" id="gh" onclick="clickMe(this);">
+                      G H
+                  </div>
+
+                  <div class="city-header" id="jkl" onclick="clickMe(this);">
+                      J K L
+                  </div>
+
+                  <div class="city-header" id="mnp" onclick="clickMe(this);">
+                      M N P
+                  </div>
+
+                  <div class="city-header" id="qrs" onclick="clickMe(this);">
+                      Q R S
+                  </div>
+
+                  <div class="city-header" id="twx" onclick="clickMe(this);">
+                      T W X
+                  </div>
+
+                  <div class="city-header" id="yz" onclick="clickMe(this);">
+                      Y Z
+                  </div>
+              </div>
+              <div>
+              <div class="city-more" id="abc-city" style="float: right"></div>
+              <div class="city-more hide" id="def-city" style="float: right"></div>
+              <div class="city-more hide" id="gh-city" style="float: right"></div>
+              <div class="city-more hide" id="jkl-city" style="float: right"></div>
+              <div class="city-more hide" id="mnp-city" style="float: right"></div>
+              <div class="city-more hide" id="qrs-city" style="float: right"></div>
+              <div class="city-more hide" id="twx-city" style="float: right"></div>
+              <div class="city-more hide" id="yz-city" style="float: right"></div>
+                  </div>
+          </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+    <script type="text/javascript">
+        var abc_str = '<ul style="padding: 0; width: 419.2px">';
+        var def_str = '<ul style="padding: 0; width: 419.2px">';
+        var gh_str = '<ul style="padding: 0; width: 419.2px">';
+        var jkl_str = '<ul style="padding: 0; width: 419.2px">';
+        var mnp_str = '<ul style="padding: 0; width: 419.2px">';
+        var qrs_str = '<ul style="padding: 0; width: 419.2px">';
+        var twx_str = '<ul style="padding: 0; width: 419.2px">';
+        var yz_str = '<ul style="padding: 0; width: 419.2px">';
+
+
+        var abc_city = ['鞍 山', '安 庆', '安 阳', '北 京', '包 头', '保 定', '蚌 埠', '宝 鸡', '滨 州', '长 春', '长 沙', '成 都', '重 庆', '常 州', '常 德', '常 熟', '沧 州', '潮 州', '彬 州', '赤 峰', '滁 州', '长 治'];
+        var def_city = ['大 连', '东 莞', '丹 东', '大 庆', '达 州', '大 同', '德 阳', '德 州', '东 营', '鄂尔多斯', '鄂 州', '福 州', '佛 山', '抚 顺', '抚 州', '阜 阳'];
+        var gh_city = ['广 州', '贵 阳', '赣 州', '广 安', '广 元', '贵 港', '桂 林', '哈尔滨', '杭 州', '合 肥', '海 口', '呼和浩特', '惠 州', '衡 阳', '淮 安', '湖 州', '邯 郸', '汉 中', '河 源', '菏 泽', '衡 水', '怀 化', '淮 北', '淮 南', '黄 冈', '黄 石'];
+        var jkl_city = ['济 南', '嘉 兴', '金 华', '吉 林', '江 门', '荆 州', '济 宁', '九 江', '吉 安', '焦 作', '揭 阳', '锦 州', '晋 中', '荆 门', '昆 明', '昆 山', '开 封', '拉 萨', '兰 州', '廊 坊', '临 沂', '洛 阳', '连云港', '柳 州', '乐 山', '聊 城', '临 汾', '六 安', '娄 底', '泸 州', '漯 河'];
+        var mnp_city = ['绵 阳', '马鞍山', '茂 名', '眉 山', '梅 州', '南 京', '宁 波', '南 昌', '南 通', '南 宁', '南 充', '南 阳', '内 江', '宁 德', '平顶山', '莆 田', '濮 阳'];
+        var qrs_city = ['青 岛', '泉 州', '秦皇岛', '清 远', '齐齐哈尔', '衢 州', '曲 靖', '日 照', '上 海', '深 圳', '沈 阳', '石家庄', '苏 州', '三 亚', '绍 兴', '汕 头', '汕 尾', '商 丘', '上 饶', '韶 关', '邵 阳', '十 堰', '随 州', '遂 宁', '宿 迁', '宿 州'];
+        var twx_city = ['天 津', '太 原', '台 州', '唐 山', '泰 州', '铁 岭', '泰 安', '武 汉', '无 锡', '温 州', '乌鲁木齐', '芜 湖', '潍 坊', '威 海', '渭 南', '西 安', '厦 门', '徐 州', '襄 阳', '湘 潭', '咸 阳', '西 宁', '咸 宁', '孝 感', '新 乡', '信 阳', '邢 台', '许 昌', '宣 城'];
+        var yz_city = ['烟 台', '扬 州', '宜 昌', '盐 城', '义 务', '营 口', '银 川', '阳 江', '宜 宾', '宜 春', '益 阳', '永 州', '玉 林', '岳 阳', '运 城', '漳 州', '郑 州', '中 山', '珠 海', '镇 江', '株 洲', '湛 江', '肇 庆', '张家港', '淄 博', '枣 庄', '张家口', '周 口', '驻马店', '遵 义'];
+
+
+        for (let i = 0; i < abc_city.length; i++) {
+        abc_str += '<span style="margin: 10px 20px; display: inline-block"><a href="/works?city_name=' + abc_city[i] + '">' + abc_city[i] + '</a></span>';
+        }
+        abc_str += "</ul>";
+        document.getElementById("abc-city").innerHTML = abc_str;
+
+        for (let i = 0; i < def_city.length; i++) {
+        def_str += '<span style="margin: 10px 20px; display: inline-block"><a href="/works?city_name=' + def_city[i] + '">' + def_city[i] + '</a></span>';
+        }
+        def_str += "</ul>";
+        document.getElementById("def-city").innerHTML = def_str;
+
+        for (let i = 0; i < gh_city.length; i++) {
+        gh_str += '<span style="margin: 10px 20px; display: inline-block"><a href="/works?city_name=' + gh_city[i] + '">' + gh_city[i] + '</a></span>';
+        }
+        gh_str += "</ul>";
+        document.getElementById("gh-city").innerHTML = gh_str;
+
+        for (let i = 0; i < jkl_city.length; i++) {
+        jkl_str += '<span style="margin: 10px 20px; display: inline-block"><a href="/works?city_name=' + jkl_city[i] + '">' + jkl_city[i] + '</a></span>';
+        }
+        jkl_str += "</ul>";
+        document.getElementById("jkl-city").innerHTML = jkl_str;
+
+        for (let i = 0; i < mnp_city.length; i++) {
+        mnp_str += '<span style="margin: 10px 20px; display: inline-block"><a href="/works?city_name=' + mnp_city[i] + '">' + mnp_city[i] + '</a></span>';
+        }
+        mnp_str += "</ul>";
+        document.getElementById("mnp-city").innerHTML = mnp_str;
+
+        for (let i = 0; i < qrs_city.length; i++) {
+        qrs_str += '<span style="margin: 10px 20px; display: inline-block"><a href="/works?city_name=' + qrs_city[i] + '">' + qrs_city[i] + '</a></span>';
+        }
+        qrs_str += "</ul>";
+        document.getElementById("qrs-city").innerHTML = qrs_str;
+
+        for (let i = 0; i < twx_city.length; i++) {
+        twx_str += '<span style="margin: 10px 20px; display: inline-block"><a href="/works?city_name=' + twx_city[i] + '">' + twx_city[i] + '</a></span>';
+        }
+        twx_str += "</ul>";
+        document.getElementById("twx-city").innerHTML = twx_str;
+
+        for (let i = 0; i < yz_city.length; i++) {
+        yz_str += '<span style="margin: 10px 20px; display: inline-block"><a href="/works?city_name=' + yz_city[i] + '">' + yz_city[i] + '</a></span>';
+        }
+        yz_str += "</ul>";
+        document.getElementById("yz-city").innerHTML = yz_str;
+
+
+        function clickMe(self) {
+            $(self).addClass("city-click");
+            $(self).siblings().removeClass("city-click");
+            var id_str = "#" + self.id + "-city";
+            console.log(id_str);
+            $(id_str).removeClass("hide");
+            console.log($(id_str));
+            $(id_str).siblings().addClass("hide")
+
+        }
+
+
+    </script>
+
+{% endblock %}
